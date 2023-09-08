@@ -11,21 +11,6 @@ let tempVector = new THREE.Vector3();
 let upVector = new THREE.Vector3(0, 1, 0);
 let joyManager;
 
-let width = window.innerWidth,
-    height = window.innerHeight;
-
-// Create a renderer and add it to the DOM.
-let renderer = new THREE.WebGLRenderer();
-renderer.setSize(width, height);
-document.body.appendChild(renderer.domElement);
-
-// Create a camera
-let camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
-camera.position.z = 50;
-camera.position.y = 50;
-
-scene.add(camera);
-
 // Create a light, set its position, and add it to the scene.
 let light = new THREE.PointLight(0xffffff);
 light.position.set(-100,200,100);
@@ -48,10 +33,6 @@ controls.minDistance = 100;
       controls.minAzimuthAngle = - Math.PI/2; // radians
       controls.maxAzimuthAngle = Math.PI/4 // radians
 
-// Add axes
-// let axes = new THREE.AxesHelper(50);
-// scene.add( axes );
-
 // Add grid
 const size = 1000;
 const divisions = 80;
@@ -65,6 +46,10 @@ let cubeMaterial = new THREE.MeshNormalMaterial();
 let mesh = new THREE.Mesh( geometry, cubeMaterial );
 scene.add( mesh );
 
+Resourses.load(() => {
+  Stickman.init();
+});
+
 //var ground = new Object3D()
 let size_floor = 1000;
 let geometry_floor = new THREE.BoxGeometry(size_floor, 1, size_floor)
@@ -75,6 +60,12 @@ floor.position.y = -5;
 //ground.add(floor)
 scene.add(floor)
 //floor.rotation.x = -Math.PI / 2
+
+/**
+ * Animate
+ */
+const clock = new THREE.Clock()
+let previousTime = 0
 
 resize();
 animate();
@@ -95,6 +86,8 @@ function resize(){
 // Renders the scene
 function animate() {
 
+  // Stickman.playAnimation(PLAYER_ANIM_LIST.RUN);
+
   updatePlayer();
   renderer.render( scene, camera );
   controls.update();
@@ -102,62 +95,61 @@ function animate() {
   requestAnimationFrame( animate );
 }
 
+function calculateRotationAngle(fromVector, toVector) {
+  const from = fromVector.clone().normalize();
+  const to = toVector.clone().normalize();
+  const dot = from.dot(to);
+  const angle = Math.acos(Math.min(1, Math.max(-1, dot)));
+  const cross = new THREE.Vector3().crossVectors(from, to);
+  return cross.y > 0 ? -angle : angle;
+}
+
+function updateStickmanOrientation(rotationAngle) {
+  Stickman.stickmanModel.rotation.y = rotationAngle;
+}
 
 function updatePlayer(){
-  if(!SitckmanIsLoaded) return;
+  if(!Stickman.StickmanIsLoaded) return;
 
   // move the player
-  const angle = controls.getAzimuthalAngle()
-  
-    if (fwdValue > 0) {
-        tempVector
-          .set(0, 0, -fwdValue)
-          .applyAxisAngle(upVector, angle)
-          stickmanModel.position.addScaledVector(
-          tempVector,
-          1
-        )
-      }
-  
-      if (bkdValue > 0) {
-        tempVector
-          .set(0, 0, bkdValue)
-          .applyAxisAngle(upVector, angle)
-          stickmanModel.position.addScaledVector(
-          tempVector,
-          1
-        )
-      }
+  let forwardVector = new THREE.Vector3();
+  let strafeVector = new THREE.Vector3();
 
-      if (lftValue > 0) {
-        tempVector
-          .set(-lftValue, 0, 0)
-          .applyAxisAngle(upVector, angle)
-          stickmanModel.position.addScaledVector(
-          tempVector,
-          1
-        )
-      }
+  if (fwdValue > 0) {
+    forwardVector.set(0, 0, -fwdValue);
+  } else if (bkdValue > 0) {
+    forwardVector.set(0, 0, bkdValue);
+  }
 
-      if (rgtValue > 0) {
-        tempVector
-          .set(rgtValue, 0, 0)
-          .applyAxisAngle(upVector, angle)
-        stickmanModel.position.addScaledVector(
-          tempVector,
-          1
-        )
-      }
-  
-  //mesh.updateMatrixWorld()
+  if (lftValue > 0) {
+    strafeVector.set(-lftValue, 0, 0);
+  } else if (rgtValue > 0) {
+    strafeVector.set(rgtValue, 0, 0);
+  }
+
+  tempVector.copy(forwardVector).add(strafeVector).normalize();
+
+  const angle = controls.getAzimuthalAngle();
+  const rotationAngle = calculateRotationAngle(
+    Stickman.stickmanModel.position.clone().normalize(),
+    tempVector
+  );
+
+  updateStickmanOrientation(rotationAngle);
+
+  Stickman.stickmanModel.lookAt(
+    Stickman.stickmanModel.position.x + tempVector.x,
+    Stickman.stickmanModel.position.y,
+    Stickman.stickmanModel.position.z + tempVector.z
+  );
+
+  Stickman.stickmanModel.position.addScaledVector(tempVector, 1);
   
   //controls.target.set( mesh.position.x, mesh.position.y, mesh.position.z );
   // reposition camera
   camera.position.sub(controls.target)
-  controls.target.copy(stickmanModel.position)
-  camera.position.add(stickmanModel.position)
-  
-  
+  controls.target.copy(Stickman.stickmanModel.position)
+  camera.position.add(Stickman.stickmanModel.position)
 };
 
 function addJoystick(){
@@ -204,5 +196,4 @@ joyManager['0'].on('move', function (evt, data) {
         lftValue = 0
         rgtValue = 0
       })
-  
 }
