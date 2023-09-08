@@ -1,9 +1,6 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.117.1/build/three.module.js'
-
 import {
     OrbitControls
 } from "https://cdn.jsdelivr.net/npm/three@0.117.1/examples/jsm/controls/OrbitControls.js"
-import nipplejs from 'nipplejs';
 
 // vars
 let fwdValue = 0;
@@ -182,7 +179,6 @@ function addJoystick(){
 joyManager['0'].on('move', function (evt, data) {
         const forward = data.vector.y
         const turn = data.vector.x
-        console.log('turn', turn);
 
         if (forward > 0) {
           fwdValue = Math.abs(forward)
@@ -195,11 +191,9 @@ joyManager['0'].on('move', function (evt, data) {
         if (turn > 0) {
           lftValue = 0
           rgtValue = Math.abs(turn)
-          console.log('rgtValue', rgtValue);
         } else if (turn < 0) {
           lftValue = Math.abs(turn)
           rgtValue = 0
-          console.log('lftValue', lftValue);
         }
       })
 
