@@ -1,6 +1,8 @@
+let stickmanModel;
+
 Resourses.load(() => {
     const scaleConst = 5;
-    const stickmanModel = Resourses.stickmanObj.scene;
+    stickmanModel = Resourses.stickmanObj.scene;
     stickmanModel.scale.set(scaleConst, scaleConst, scaleConst);
 
     stickmanModel.rotateY(Math.PI);

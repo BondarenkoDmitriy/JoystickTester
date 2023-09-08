@@ -111,7 +111,7 @@ function updatePlayer(){
         tempVector
           .set(0, 0, -fwdValue)
           .applyAxisAngle(upVector, angle)
-        mesh.position.addScaledVector(
+          stickmanModel.position.addScaledVector(
           tempVector,
           1
         )
@@ -121,7 +121,7 @@ function updatePlayer(){
         tempVector
           .set(0, 0, bkdValue)
           .applyAxisAngle(upVector, angle)
-        mesh.position.addScaledVector(
+          stickmanModel.position.addScaledVector(
           tempVector,
           1
         )
@@ -131,7 +131,7 @@ function updatePlayer(){
         tempVector
           .set(-lftValue, 0, 0)
           .applyAxisAngle(upVector, angle)
-        mesh.position.addScaledVector(
+          stickmanModel.position.addScaledVector(
           tempVector,
           1
         )
@@ -141,7 +141,7 @@ function updatePlayer(){
         tempVector
           .set(rgtValue, 0, 0)
           .applyAxisAngle(upVector, angle)
-        mesh.position.addScaledVector(
+        stickmanModel.position.addScaledVector(
           tempVector,
           1
         )
