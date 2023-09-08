@@ -1,26 +1,54 @@
-let stickmanModel;
-let SitckmanIsLoaded = false;
+// let stickmanModel;
+// let StickmanIsLoaded = false;
 
-Resourses.load(() => {
-    const scaleConst = 5;
-    stickmanModel = Resourses.stickmanObj.scene;
-    stickmanModel.scale.set(scaleConst, scaleConst, scaleConst);
+let Stickman = {
+    stickmanModel: null,
+    StickmanIsLoaded: false,
+    animMixer: null,
 
-    stickmanModel.rotateY(Math.PI);
+    init() {
+        const scaleConst = 5;
+        this.stickmanModel = Resourses.stickmanObj.scene;
+        this.stickmanModel.scale.set(scaleConst, scaleConst, scaleConst);
 
-    const stickmanOffsetX = 0;
-    const stickmanOffsetY = 0;
-    const stickmanOffsetZ = 0;
+        this.stickmanModel.rotateY(Math.PI);
 
-    stickmanModel.position.set(stickmanOffsetX, stickmanOffsetY, stickmanOffsetZ);
+        const stickmanOffsetX = 0;
+        const stickmanOffsetY = 0;
+        const stickmanOffsetZ = 0;
 
-    // -----------------
-    text_plane = stickmanModel.children[0].children.find(obj => obj.name == "Plane");
+        this.stickmanModel.position.set(stickmanOffsetX, stickmanOffsetY, stickmanOffsetZ);
 
-    text_plane.visible = false;
-    // -----------------
+        // -----------------
+        text_plane = this.stickmanModel.children[0].children.find(obj => obj.name == "Plane");
 
-    SitckmanIsLoaded = true;
+        text_plane.visible = false;
+        // -----------------
 
-    scene.add(stickmanModel);
-});
+        this.animMixer = new THREE.AnimationMixer(this.stickmanModel);
+
+        this.StickmanIsLoaded = true;
+
+        scene.add(this.stickmanModel);
+    },
+
+    // playAnimation(animationType, loop = true) {
+    //     // this.animMixer.stopAllAction();
+
+    //     const action = this.animMixer.clipAction(Resourses.stickmanObj.animations[animationType]);
+    //     action.loop = (loop ? THREE.LoopRepeat : THREE.LoopOnce);
+        
+    //     action.clampWhenFinished = !loop;
+
+    //     action.play();
+    // },
+};
+
+let PLAYER_ANIM_LIST = {
+    WIN: 0,
+    HIT_HEAD: 1,
+    DEATH: 2,
+    STOP: 3,
+    RUN: 4,
+    T: 5,
+};
