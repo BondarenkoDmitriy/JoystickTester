@@ -104,6 +104,8 @@ function animate() {
 
 
 function updatePlayer(){
+  if(!SitckmanIsLoaded) return;
+
   // move the player
   const angle = controls.getAzimuthalAngle()
   
@@ -147,13 +149,13 @@ function updatePlayer(){
         )
       }
   
-  mesh.updateMatrixWorld()
+  //mesh.updateMatrixWorld()
   
   //controls.target.set( mesh.position.x, mesh.position.y, mesh.position.z );
   // reposition camera
   camera.position.sub(controls.target)
-  controls.target.copy(mesh.position)
-  camera.position.add(mesh.position)
+  controls.target.copy(stickmanModel.position)
+  camera.position.add(stickmanModel.position)
   
   
 };

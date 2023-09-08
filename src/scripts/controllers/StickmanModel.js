@@ -1,4 +1,5 @@
 let stickmanModel;
+let SitckmanIsLoaded = false;
 
 Resourses.load(() => {
     const scaleConst = 5;
@@ -18,6 +19,8 @@ Resourses.load(() => {
 
     text_plane.visible = false;
     // -----------------
+
+    SitckmanIsLoaded = true;
 
     scene.add(stickmanModel);
 });
