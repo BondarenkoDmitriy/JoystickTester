@@ -40,34 +40,6 @@
     display: none;
   }
 
-#jumpButton {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: rgba(white, 0.2);
-  opacity: 1;
-  touch-action: manipulation;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: auto;
-}
-
-p {
-  position: relative;
-  display: inline-block;
-  color: white;
-  opacity: 1;
-  margin: 0;
-  padding: 0;
-  letter-spacing: 4px;
-  margin-left: 4px;
-}
-
 .noSelect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

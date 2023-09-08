@@ -11,29 +11,28 @@ let tempVector = new THREE.Vector3();
 let upVector = new THREE.Vector3(0, 1, 0);
 let joyManager;
 
-var width = window.innerWidth,
+let width = window.innerWidth,
     height = window.innerHeight;
 
 // Create a renderer and add it to the DOM.
-var renderer = new THREE.WebGLRenderer();
+let renderer = new THREE.WebGLRenderer();
 renderer.setSize(width, height);
 document.body.appendChild(renderer.domElement);
-// Create the scene 
-var scene = new THREE.Scene();
+
 // Create a camera
-var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+let camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
 camera.position.z = 50;
 camera.position.y = 50;
 
 scene.add(camera);
 
 // Create a light, set its position, and add it to the scene.
-var light = new THREE.PointLight(0xffffff);
+let light = new THREE.PointLight(0xffffff);
 light.position.set(-100,200,100);
 scene.add(light);
 
 // Add OrbitControls so that we can pan around with the mouse.
-var controls = new OrbitControls(camera, renderer.domElement);
+let controls = new OrbitControls(camera, renderer.domElement);
 controls.maxDistance = 100;
 controls.minDistance = 100;
       //controls.maxPolarAngle = (Math.PI / 4) * 3;
@@ -50,28 +49,28 @@ controls.minDistance = 100;
       controls.maxAzimuthAngle = Math.PI/4 // radians
 
 // Add axes
-var axes = new THREE.AxesHelper(50);
-scene.add( axes );
+// let axes = new THREE.AxesHelper(50);
+// scene.add( axes );
 
 // Add grid
-const size = 500;
-const divisions = 30;
+const size = 1000;
+const divisions = 80;
 
 const gridHelper = new THREE.GridHelper( size, divisions );
 scene.add( gridHelper );
 
-var geometry = new THREE.BoxGeometry(5,5,5);
-var cubeMaterial = new THREE.MeshNormalMaterial(); 
+let geometry = new THREE.BoxGeometry(5,5,5);
+let cubeMaterial = new THREE.MeshNormalMaterial(); 
 
-var mesh = new THREE.Mesh( geometry, cubeMaterial );
+let mesh = new THREE.Mesh( geometry, cubeMaterial );
 scene.add( mesh );
 
 //var ground = new Object3D()
-let size_floor =100
-var geometry_floor = new THREE.BoxGeometry(size_floor, 1, size_floor)
-var material_floor = new THREE.MeshNormalMaterial();
+let size_floor = 1000;
+let geometry_floor = new THREE.BoxGeometry(size_floor, 1, size_floor)
+let material_floor = new THREE.MeshNormalMaterial();
 
-var floor = new THREE.Mesh(geometry_floor, material_floor);
+let floor = new THREE.Mesh(geometry_floor, material_floor);
 floor.position.y = -5;
 //ground.add(floor)
 scene.add(floor)
