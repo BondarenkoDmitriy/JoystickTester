@@ -30,8 +30,10 @@ controls.minDistance = 100;
       controls.dampingFactor = 0.1;
       controls.enableZoom = false;
       controls.enablePan = false;
-      controls.minAzimuthAngle = - Math.PI/2; // radians
-      controls.maxAzimuthAngle = Math.PI/4 // radians
+      // controls.minAzimuthAngle = - Math.PI/2; // radians
+      // controls.maxAzimuthAngle = Math.PI/4 // radians
+      controls.minAzimuthAngle = -Infinity;
+      controls.maxAzimuthAngle = Infinity;
 
 // Add grid
 const size = 1000;
