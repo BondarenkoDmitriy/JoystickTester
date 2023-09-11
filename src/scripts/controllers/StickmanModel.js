@@ -44,16 +44,25 @@ let Stickman = {
     playAnimation(animationType = PLAYER_ANIM_LIST.STOP, loop = true) {
         const action = this.animMixer.clipAction(Resourses.stickmanObj.animations[animationType]);
         action.loop = (loop ? THREE.LoopRepeat : THREE.LoopOnce);
+        console.log(action.loop);
 
         action.play();
     },
 
-    run(isRunning) {
-        if (isRunning) {
+    run() {
+        this.animMixer.stopAllAction();
+
+        if (this.isRunning) {
             this.playAnimation(PLAYER_ANIM_LIST.RUN);
-        } else {
+        } 
+    },
+
+    stop() {
+        this.animMixer.stopAllAction();
+        
+        if (!this.isRunning) {
             this.playAnimation();
-        }
+        } 
     },
 
     update(deltaTime) {

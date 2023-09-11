@@ -179,7 +179,10 @@ function addJoystick(){
 joyManager['0'].on('move', function (evt, data) {
         const forward = data.vector.y
         const turn = data.vector.x
-        Stickman.run(true);
+        Stickman.isRunning = true;
+        Stickman.run();
+
+        console.log(Stickman.isRunning);
 
         if (forward < 0) {
           fwdValue = Math.abs(forward)
@@ -203,6 +206,8 @@ joyManager['0'].on('move', function (evt, data) {
         fwdValue = 0
         lftValue = 0
         rgtValue = 0
-        Stickman.run(false);
+        
+        Stickman.isRunning = false;
+        Stickman.stop();
       })
 }
