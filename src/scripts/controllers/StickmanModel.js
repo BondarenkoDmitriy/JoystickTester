@@ -11,6 +11,7 @@ let Stickman = {
     stickmanModel: null,
     StickmanIsLoaded: false,
     animMixer: null,
+    isRunning: false,
 
     init() {
         const scaleConst = 5;
@@ -33,21 +34,31 @@ let Stickman = {
 
         this.animMixer = new THREE.AnimationMixer(this.stickmanModel);
 
+        this.playAnimation();
+
         this.StickmanIsLoaded = true;
 
         scene.add(this.stickmanModel);
     },
 
     playAnimation(animationType = PLAYER_ANIM_LIST.STOP, loop = true) {
-        // this.animMixer.stopAllAction();
-
         const action = this.animMixer.clipAction(Resourses.stickmanObj.animations[animationType]);
         action.loop = (loop ? THREE.LoopRepeat : THREE.LoopOnce);
 
-        console.log(Resourses.stickmanObj.animations);
-        
-        action.clampWhenFinished = !loop;
-
         action.play();
+    },
+
+    run(isRunning) {
+        if (isRunning) {
+            this.playAnimation(PLAYER_ANIM_LIST.RUN);
+        } else {
+            this.playAnimation();
+        }
+    },
+
+    update(deltaTime) {
+        if (this.animMixer !== null) {
+            this.animMixer.update(deltaTime)
+        }
     },
 };
