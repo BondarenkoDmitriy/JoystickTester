@@ -1,5 +1,6 @@
 import { updatePlayer, addJoystick } from './controllers/JoystickControls';
 import { controls } from './controllers/JoystickControls.js';
+// import { handleOrientation } from './controllers/GyroAndAcce.js';
 
 // Create a light, set its position, and add it to the scene.
 let light = new THREE.PointLight(0xffffff);
@@ -61,6 +62,8 @@ function animate() {
   const elapsedTime = clock.getElapsedTime();
   const deltaTime = elapsedTime - previousTime;
   previousTime = elapsedTime;
+
+  // handleOrientation();
 
   Stickman.update(deltaTime);
   

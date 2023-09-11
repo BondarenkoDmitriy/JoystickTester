@@ -42,6 +42,9 @@ function calculateRotationAngle(fromVector, toVector) {
   function updateStickmanOrientation(rotationAngle) {
     Stickman.stickmanModel.rotation.y = rotationAngle;
   }
+
+    let currentRotationAngle = 0;
+    const rotationSpeed = 0.1;
   
   export function updatePlayer(){
     if(!Stickman.StickmanIsLoaded) return;
@@ -70,6 +73,7 @@ function calculateRotationAngle(fromVector, toVector) {
       tempVector
     );
   
+    currentRotationAngle = THREE.MathUtils.lerp(currentRotationAngle, rotationAngle, rotationSpeed);
     updateStickmanOrientation(rotationAngle);
   
     Stickman.stickmanModel.lookAt(
@@ -103,39 +107,39 @@ function calculateRotationAngle(fromVector, toVector) {
           dynamicPage: true,
         }
      
-     
     joyManager = nipplejs.create(options);
     
   joyManager['0'].on('move', function (evt, data) {
-          const forward = data.vector.y
-          const turn = data.vector.x
-          Stickman.isRunning = true;
-          Stickman.run();
+        const forward = data.vector.y
+        const turn = data.vector.x
+
+        Stickman.isRunning = true;
+        Stickman.run();
+
+        if (forward < 0) {
+        fwdValue = Math.abs(forward)
+        bkdValue = 0
+        } else {
+        fwdValue = 0
+        bkdValue = Math.abs(forward)
+        }
+
+        if (turn < 0) {
+        lftValue = 0
+        rgtValue = Math.abs(turn)
+        } else {
+        lftValue = Math.abs(turn)
+        rgtValue = 0
+        }
+    })
   
-          if (forward < 0) {
-            fwdValue = Math.abs(forward)
-            bkdValue = 0
-          } else {
-            fwdValue = 0
-            bkdValue = Math.abs(forward)
-          }
-  
-          if (turn < 0) {
-            lftValue = 0
-            rgtValue = Math.abs(turn)
-          } else {
-            lftValue = Math.abs(turn)
-            rgtValue = 0
-          }
-        })
-  
-       joyManager['0'].on('end', function (evt) {
-          bkdValue = 0
-          fwdValue = 0
-          lftValue = 0
-          rgtValue = 0
-  
-          Stickman.isRunning = false;
-          Stickman.stop();
-        })
+    joyManager['0'].on('end', function (evt) {
+        bkdValue = 0
+        fwdValue = 0
+        lftValue = 0
+        rgtValue = 0
+
+        Stickman.isRunning = false;
+        Stickman.stop();
+    })
   }
