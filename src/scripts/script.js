@@ -42,14 +42,15 @@ const divisions = 80;
 const gridHelper = new THREE.GridHelper( size, divisions );
 scene.add( gridHelper );
 
-let geometry = new THREE.BoxGeometry(5,5,5);
-let cubeMaterial = new THREE.MeshNormalMaterial(); 
+// let geometry = new THREE.BoxGeometry(5,5,5);
+// let cubeMaterial = new THREE.MeshNormalMaterial(); 
 
-let mesh = new THREE.Mesh( geometry, cubeMaterial );
-scene.add( mesh );
+// let mesh = new THREE.Mesh( geometry, cubeMaterial );
+// scene.add( mesh );
 
 Resourses.load(() => {
   Stickman.init();
+  Stickman.playAnimation();
 });
 
 //var ground = new Object3D()
@@ -89,8 +90,9 @@ function resize(){
 function animate() {
 
   // Stickman.playAnimation(PLAYER_ANIM_LIST.RUN);
-
+  
   updatePlayer();
+
   renderer.render( scene, camera );
   controls.update();
 
