@@ -3,6 +3,7 @@ import {
 } from "https://cdn.jsdelivr.net/npm/three@0.117.1/examples/jsm/controls/OrbitControls.js"
 
 // vars
+let verticalValue = 0;
 let fwdValue = 0;
 let bkdValue = 0;
 let rgtValue = 0;
@@ -21,7 +22,7 @@ let controls = new OrbitControls(camera, renderer.domElement);
 controls.maxDistance = 100;
 controls.minDistance = 100;
       //controls.maxPolarAngle = (Math.PI / 4) * 3;
-      controls.maxPolarAngle = Math.PI/2 ;
+      controls.maxPolarAngle = Math.PI / 2 ;
       controls.minPolarAngle = 0;
       controls.autoRotate = false;
       controls.autoRotateSpeed = 0;
@@ -50,7 +51,7 @@ scene.add( gridHelper );
 
 Resourses.load(() => {
   Stickman.init();
-  Stickman.playAnimation();
+  // Stickman.playAnimation(PLAYER_ANIM_LIST.STOP);
 });
 
 //var ground = new Object3D()
@@ -67,9 +68,6 @@ scene.add(floor)
 /**
  * Animate
  */
-const clock = new THREE.Clock()
-let previousTime = 0
-
 resize();
 animate();
 window.addEventListener('resize',resize);
@@ -88,10 +86,15 @@ function resize(){
 
 // Renders the scene
 function animate() {
-
-  // Stickman.playAnimation(PLAYER_ANIM_LIST.RUN);
+  const clock = new THREE.Clock();
+  let previousTime = 0;
+  const elapsedTime = clock.getElapsedTime();
+  const deltaTime = elapsedTime - previousTime;
+  previousTime = elapsedTime;
   
   updatePlayer();
+
+  Stickman.update(deltaTime);
 
   renderer.render( scene, camera );
   controls.update();
@@ -176,19 +179,20 @@ function addJoystick(){
 joyManager['0'].on('move', function (evt, data) {
         const forward = data.vector.y
         const turn = data.vector.x
+        Stickman.run(true);
 
-        if (forward > 0) {
+        if (forward < 0) {
           fwdValue = Math.abs(forward)
           bkdValue = 0
-        } else if (forward < 0) {
+        } else {
           fwdValue = 0
           bkdValue = Math.abs(forward)
         }
 
-        if (turn > 0) {
+        if (turn < 0) {
           lftValue = 0
           rgtValue = Math.abs(turn)
-        } else if (turn < 0) {
+        } else {
           lftValue = Math.abs(turn)
           rgtValue = 0
         }
@@ -199,5 +203,6 @@ joyManager['0'].on('move', function (evt, data) {
         fwdValue = 0
         lftValue = 0
         rgtValue = 0
+        Stickman.run(false);
       })
 }
