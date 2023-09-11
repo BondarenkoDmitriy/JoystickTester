@@ -1,5 +1,11 @@
-// let stickmanModel;
-// let StickmanIsLoaded = false;
+let PLAYER_ANIM_LIST = {
+    WIN: 0,
+    HIT_HEAD: 1,
+    DEATH: 2,
+    STOP: 3,
+    RUN: 4,
+    T: 5,
+};
 
 let Stickman = {
     stickmanModel: null,
@@ -32,23 +38,16 @@ let Stickman = {
         scene.add(this.stickmanModel);
     },
 
-    // playAnimation(animationType, loop = true) {
-    //     // this.animMixer.stopAllAction();
+    playAnimation(animationType = PLAYER_ANIM_LIST.STOP, loop = true) {
+        // this.animMixer.stopAllAction();
 
-    //     const action = this.animMixer.clipAction(Resourses.stickmanObj.animations[animationType]);
-    //     action.loop = (loop ? THREE.LoopRepeat : THREE.LoopOnce);
+        const action = this.animMixer.clipAction(Resourses.stickmanObj.animations[animationType]);
+        action.loop = (loop ? THREE.LoopRepeat : THREE.LoopOnce);
+
+        console.log(Resourses.stickmanObj.animations);
         
-    //     action.clampWhenFinished = !loop;
+        action.clampWhenFinished = !loop;
 
-    //     action.play();
-    // },
-};
-
-let PLAYER_ANIM_LIST = {
-    WIN: 0,
-    HIT_HEAD: 1,
-    DEATH: 2,
-    STOP: 3,
-    RUN: 4,
-    T: 5,
+        action.play();
+    },
 };
